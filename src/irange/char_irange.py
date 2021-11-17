@@ -1,6 +1,9 @@
 from typing import Iterator, Optional, Any
 
-from src.irange.num_irange import _number_generator
+from src.irange.num_irange import (
+    _generate_finite_num_range,
+    _generate_infinite_num_range,
+)
 
 
 def is_char(*objs: Any, allow_none=False) -> bool:
@@ -77,17 +80,16 @@ def _generate_infinite_char_range(first: str, second: Optional[str]) -> Iterator
     :return: A generator of the range.
     """
     is_lower = is_lower_char(first)
-    buffer = 97 if is_lower else 65
-    if second in [None, Ellipsis]:
-        first = ord(first) - buffer
-        yield from (chr(i) for i in _number_generator(first))
-
-    first, step = ord(first) - buffer, ord(second) - ord(first)
-    yield from (chr(i) for i in _number_generator(first, step))
+    _first, _second = (
+        char_decode(string) if string else None for string in (first, second)
+    )
+    yield from (
+        char_encode(i, is_lower) for i in _generate_infinite_num_range(_first, _second)
+    )
 
 
 def _generate_finite_char_range(
-    first: str, second: Optional[str], final, final_include: bool
+    first: str, second: Optional[str], final: Optional[str], final_include: bool
 ) -> Iterator[str]:
     """
     Generates a finite range of characters.
@@ -98,19 +100,15 @@ def _generate_finite_char_range(
     :final_include: True if the final character is included in the range.
     :return: A generator of the range.
     """
-    if second in [None, Ellipsis]:
-        yield from (chr(i) for i in range(ord(first), ord(final) + final_include))
-    elif isinstance(second, str):
-        is_lower = is_lower_char(first)
-        buffer = 97 if is_lower else 65
-        first, final, step = (
-            ord(first) - buffer,
-            ord(final) - buffer + final_include,
-            ord(second) - ord(first),
-        )
-        yield from (char_encode(i, is_lower) for i in range(first, final, step))
-    else:
-        raise TypeError("Second argument must be an character")
+    is_lower = is_lower_char(first)
+    _first, _second, _final = (
+        char_decode(string) if string else None for string in (first, second, final)
+    )
+
+    yield from (
+        char_encode(i, is_lower)
+        for i in _generate_finite_num_range(_first, _second, _final, final_include)
+    )
 
 
 def char_irange(
@@ -128,13 +126,8 @@ def char_irange(
     :final: The final character of the range.
     :return: A generator of the range.
     """
-    first, second, final = (
-        char_decode(chars) if chars else None for chars in (first, second, final)
-    )
-    if not is_char(first, second, final, allow_none=True):
-        raise TypeError("The object must be a character [a-zA-Z]")
 
-    if type(final) is str:
+    if isinstance(final, str):
         yield from _generate_finite_char_range(first, second, final, final_include)
     elif final in [None, Ellipsis]:
         yield from _generate_infinite_char_range(first, second)

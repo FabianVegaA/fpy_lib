@@ -1,4 +1,4 @@
-from typing import Iterator, Optional, Union, Any
+from typing import Iterator, Optional, Union
 from numbers import Number
 
 from src.irange.num_irange import num_irange
@@ -25,4 +25,4 @@ def irange(
     elif isinstance(first, str):
         yield from char_irange(first, second, final, final_include)
     else:
-        raise TypeError("Invalid type")
+        raise TypeError(f"Invalid type of {first}")
