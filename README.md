@@ -66,10 +66,68 @@ class Foo:
     return self.x + y + z
 
 foo = Foo(1)
-sum1 = foo.sum3(2, 3) # Output: A functions that receive one arguments.
-sum1(4) # Output: 9
+sum_five = foo.sum3(2, 3) # Output: A functions that receive one arguments.
+sum_five(4)               # Output: 9
 ```
 
 This is a very useful feature to make a function lazy, and do not use the function `partial` to do not evaluate directly the function.
 
 ### Compose and paralelize functions
+
+Into this library, there is a function `compose` that can be used to compose two or more functions, to make pipelines to process data. Also, there is a function `parallelize` that can be used to paralelize a function.
+
+For example, the following code:
+
+```python
+
+decendent_pair_numbers = compose(
+  lambda x: list(range(x)),
+  lambda x: x[::-1],
+  lambda x: x[::2]
+)
+
+decendent_pair_numbers(5) # Output: [4, 2, 0]
+
+```
+
+And the following code:
+
+```python
+
+def median(*xs):
+    if len(xs) % 2 == 0:
+        return (xs[len(xs) // 2 - 1] + xs[len(xs) // 2]) / 2
+    return xs[len(xs) // 2 + 1]
+
+
+describe = parallelize(
+    lambda *xs: sum(xs) / len(xs),
+    median,
+    max,
+    min,
+)
+
+describe(1, 2, 3, 4, 5, 6) # Output: (3.5, 3.5, 6, 1)
+
+```
+
+In this case, the functions into parallelize receive the same arguments, but it can receive a agument different to each function with the parameter `uniqui_intput`. For example:
+
+```python
+
+func_parallelized = parallelize(
+    sorted,
+    sum,
+    max,
+    min,
+)
+
+list_1 = [1, 4, 2, 3, 4, 1, 2, 3, 4, 10]
+list_2 = [5, 6, 7, 8, 9, 10]
+list_3 = [-1, -5, 100, 19, 99]
+
+func_parallelized(
+  list_1, list_2, list_3, list_3, uniqui_intput=False
+) # Output: ([1, 1, 2, 2, 3, 3, 4, 4, 4, 10], 45, 100, -5)
+
+```
