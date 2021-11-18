@@ -31,7 +31,7 @@ def _generate_infinite_num_range(
     if second in [None, Ellipsis]:
         yield from _number_generator(first)
     elif "__sub__" in dir(second):
-        yield from _number_generator(first, second - first)
+        yield from _number_generator(first, step=second - first)
     else:
         raise TypeError(f"{type(first)} argument must have __sub__")
 
