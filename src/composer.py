@@ -39,17 +39,3 @@ def parallelize(*funcs: Callable[..., Any]) -> Callable[..., Tuple]:
         return tuple(func(*args) for func in funcs)
 
     return wrapper
-
-
-func_parallelized = parallelize(
-    sorted,
-    sum,
-    max,
-    min,
-)
-
-list_1 = [1, 4, 2, 3, 4, 1, 2, 3, 4, 10]
-list_2 = [5, 6, 7, 8, 9, 10]
-list_3 = [-1, -5, 100, 19, 99]
-
-print(func_parallelized(list_1, list_2, list_3, list_3, uniqui_intput=False))

@@ -133,6 +133,3 @@ def char_irange(
         yield from _generate_infinite_char_range(first, second)
     else:
         raise TypeError("Final argument must be an character")
-
-
-print((char_decode("paralelepipedo")))
