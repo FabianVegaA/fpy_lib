@@ -9,7 +9,7 @@ class Maybe(Monad):
             return Just(value)
         return Nothing()
 
-    def bind(self, func: Callable[[[T]], S]) -> "Maybe[S]":
+    def bind(self, func: Callable[[T], S]) -> "Maybe[S]":
         try:
             return Just(func(self.get()))
         except Exception:
