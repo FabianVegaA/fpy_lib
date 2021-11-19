@@ -15,6 +15,9 @@ class Maybe(Monad):
         except Exception:
             return Nothing()
 
+    def apply(self, func: Callable[[T], S]) -> "Maybe[S]":
+        return self.bind(func)
+
 
 class Just(Maybe):
     def __str__(self) -> str:
