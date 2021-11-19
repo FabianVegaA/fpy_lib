@@ -1,5 +1,6 @@
 from typing import Callable
 from src.functors.functor import Functor, T, S
+from src.lazyness import lazy_eval
 
 
 class Monad(Functor):
@@ -16,5 +17,6 @@ class Monad(Functor):
         return self.bind(func)
 
 
+@lazy_eval
 def unit(m: "Monad", value: T) -> "Monad[T]":
     return m.unit(m, value)

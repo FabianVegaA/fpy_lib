@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Generic, Optional, TypeVar
-
+from src.lazyness import lazy_eval
 
 T = TypeVar("T")
 S = TypeVar("S")
@@ -21,5 +21,6 @@ class Functor(Generic[T]):
         pass
 
 
-def fmap(func: Callable[[Functor[T]], Functor[S]], fa: Functor[T]) -> Functor[S]:
-    return fa.fmap(func)
+@lazy_eval
+def fmap(func: Callable[[Functor[T]], Functor[S]], ft: Functor[T]) -> Functor[S]:
+    return ft.fmap(func)

@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Optional
 from src.functors.functor import T, S
 from src.functors.monad import Monad
 
@@ -25,11 +25,16 @@ class Just(Maybe):
 
 
 class Nothing(Maybe):
-    def __init__(self) -> None:
-        return
+    def __init__(self, *failure: Optional[Exception]) -> None:
+        """
+        This does nothing.
+        """
+        object.__setattr__(
+            self, "_Nothing__failure", filter(lambda fail: fail is not None, failure)
+        )
 
     def __str__(self) -> str:
         return "Nothing"
 
     def __repr__(self) -> str:
-        return self.__str__()
+        return f"{self.__str__()} {list(self.__failure)}"
