@@ -4,5 +4,5 @@ from src.lazyness import lazy_eval
 
 
 @lazy_eval
-def apply(func: Functor[Callable[[T], S]], value: Functor[T]) -> Functor[S]:
-    return fmap(func.get(), value)
+def apply(func: Functor[Callable[[T], S]], ft: Functor[T]) -> Functor[S]:
+    return ft.apply(func)
