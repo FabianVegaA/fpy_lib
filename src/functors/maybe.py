@@ -1,5 +1,5 @@
 from typing import Callable, Optional
-from src.functors.functor import T, S
+from src.functors.functor import T, S, fmap
 from src.functors.monad import Monad
 
 

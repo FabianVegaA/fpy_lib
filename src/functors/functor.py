@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Generic, Optional, TypeVar
 from src.lazyness import lazy_eval
+from src.composer import compose
 
 T = TypeVar("T")
 S = TypeVar("S")
