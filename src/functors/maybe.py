@@ -1,9 +1,10 @@
-from typing import Callable, Optional
-from src.functors.functor import T, S, fmap
+from typing import Callable, Generic, Optional
+from src.functors.functor import T, S, Functor
 from src.functors.monad import Monad
+from src.functors.applicative import Applicative
 
 
-class Maybe(Monad):
+class Maybe(Applicative, Monad, Generic[T]):
     def unit(self, value: T) -> "Maybe[T]":
         if value is not None:
             return Just(value)
@@ -11,9 +12,12 @@ class Maybe(Monad):
 
     def bind(self, func: Callable[[T], S]) -> "Maybe[S]":
         try:
-            return Just(func(self.get()))
-        except Exception:
-            return Nothing()
+            value = func(self.get())
+            if value is None:
+                return Nothing(ValueError("The value is None"))
+            return Just(value)
+        except Exception as e:
+            return Nothing(e)
 
 
 class Just(Maybe):
@@ -32,6 +36,9 @@ class Nothing(Maybe):
         object.__setattr__(
             self, "_Nothing__failure", filter(lambda fail: fail is not None, failure)
         )
+
+    def fails(self) -> bool:
+        return self.__failure
 
     def __str__(self) -> str:
         return "Nothing"
