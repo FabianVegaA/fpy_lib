@@ -10,6 +10,9 @@ class Monad(Functor):
     def bind(self, func: Callable[[[T]], S]) -> "Monad[S]":
         return Monad(func(self.get()))
 
+    def apply(self, func: Callable[[T], S]) -> "Monad[S]":
+        return self.bind(func)
+
     def fmap(self, func: Callable[[[T]], S]) -> "Monad[S]":
         return self.bind(func)
 
