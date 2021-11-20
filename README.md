@@ -179,11 +179,75 @@ apply(fmap(func, f1), f2)
 ```
 
 > Yes this is copy from `liftA2` in Haskell.
+
 ### Monad
 
+> "In short, a monad is a way to structure computations in terms of values and sequences of computations using typed values" [All About Monads](https://wiki.haskell.org/All_About_Monads)
 
 #### Bind (>>)
 
+This function to bind a function over a monod value. For example:
+
+```python
+Monad(1) >> (lambda x: x + 1) # Output: Monad(2)
+```
+
+Or inclucive:
+
+```python
+example = (
+  Monad(1)
+  >> (lambda x: x + 1)
+  >> (lambda x: x ** 2)
+  >> (lambda x: x // 3)
+  >> (lambda x: x * 10)
+  >> str
+
+) # Output: Monad("10")
+```
+
 #### Maybe
+
+This is Functor, Applicative and Monad. It is used to keep a information flow without errors.
+
+For example:
+
+```python
+def div(x: Number, y: Number) -> Maybe[Number]:
+    if y == 0:
+        return Nothing()
+    return Just(x / y)
+
+div(1, 0) # Output: Nothing
+div(1, 2) # Output: Just(0.5)
+```
+
+Or better:
+
+```python
+def div(x: Number, y: Number) -> Maybe[Number]:
+  return unit(Maybe, x / y)
+
+div(1, 0) # Output: Nothing
+div(1, 2) # Output: Just(0.5)
+```
+
+Of this way, the function `div` can be used to divide two numbers without errors, and build pipelines to process data in a safe way.
+
+Like the next example:
+
+```python
+def email_process(email: str) -> Maybe[str]:
+    return (
+        unit(Maybe, email)
+        >> (lambda s: s.strip())
+        >> (lambda s: s.lower())
+        >> (lambda s: None if "@" not in s else s)
+        >> (lambda s: None if any(c in s for c in "!#$%&*+-/=?^_`{|}~") else s)
+    )
+
+email_process("  Fpylib@email.com   ") # Output: Just fpylib@email.com
+email_process("  This is not a email   ") # Output: Nothing
+```
 
 #### FList
