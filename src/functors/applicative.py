@@ -1,6 +1,12 @@
-from typing import Callable
+from typing import Any, Callable, Generic, Optional
 from src.functors.functor import Functor, T, S, fmap
+from src.functors.monad import Monad
 from src.lazyness import lazy_eval
+
+
+class Applicative(Functor, Generic[T]):
+    def apply(self, func: "Functor[Callable[[T], S]]") -> "Functor[S]":
+        return self.bind(func.get())
 
 
 @lazy_eval
@@ -15,7 +21,7 @@ def apply(func: Functor[Callable[[T], S]], ft: Functor[T]) -> Functor[S]:
     return ft.apply(func)
 
 
-def lift(func: Callable[[T, T], S], f1: Functor[T], f2: Functor[T]) -> Functor[S]:
+def lift_a2(func: Callable[[T, T], S], f1: Functor[T], f2: Functor[T]) -> Functor[S]:
     """
     This is the version Pythonic to liftA2 from Haskell.
 
