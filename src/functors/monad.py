@@ -10,8 +10,8 @@ class Monad(Functor):
     def bind(self, func: Callable[[[T]], S]) -> "Monad[S]":
         return Monad(func(self.get()))
 
-    def apply(self, func: Callable[[T], S]) -> "Monad[S]":
-        return self.bind(func)
+    def apply(self, func: "Monad[Callable[[T], S]]") -> "Monad[S]":
+        return self.bind(func.get())
 
     def fmap(self, func: Callable[[[T]], S]) -> "Monad[S]":
         return self.bind(func)
@@ -22,4 +22,11 @@ class Monad(Functor):
 
 @lazy_eval
 def unit(m: "Monad", value: T) -> "Monad[T]":
+    """
+    The unit function for the Monad.
+
+    :param m: The Monad.
+    :param value: The value to be wrapped in the Monad.
+    :return: The Monad with the value.
+    """
     return m.unit(m, value)

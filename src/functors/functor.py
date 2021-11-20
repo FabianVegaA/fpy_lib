@@ -1,7 +1,6 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import Any, Callable, Generic, Optional, TypeVar
 from src.lazyness import lazy_eval
-from src.composer import compose
 
 T = TypeVar("T")
 S = TypeVar("S")
@@ -24,4 +23,11 @@ class Functor(Generic[T]):
 
 @lazy_eval
 def fmap(func: Callable[[Functor[T]], Functor[S]], ft: Functor[T]) -> Functor[S]:
+    """
+    This function is a functor's fmap function.
+
+    :param func: Callable[[Functor[T]], Functor[S]]
+    :param ft: Functor[T]
+    :return: Functor[S]
+    """
     return ft.fmap(func)
