@@ -10,6 +10,14 @@ This is a library to do functional programming in Python.
     - [Intelligents Ranges with `irange`](#intelligents-ranges-with-irange)
     - [Lazyness to functions](#lazyness-to-functions)
     - [Compose and paralelize functions](#compose-and-paralelize-functions)
+  - [Functional Programming in Python?](#functional-programming-in-python)
+    - [Functor](#functor)
+      - [Fmap](#fmap)
+    - [Applicative](#applicative)
+    - [Monad](#monad)
+      - [Bind (>>)](#bind-)
+      - [Maybe](#maybe)
+      - [FList](#flist)
 
 ## Features
 
@@ -131,3 +139,51 @@ func_parallelized(
 ) # Output: ([1, 1, 2, 2, 3, 3, 4, 4, 4, 10], 45, 100, -5)
 
 ```
+
+## Functional Programming in Python?
+
+### Functor
+
+The Functors are a mathematical concept that is used to describe a value wrapped in a context.
+
+In Fpylib, the functor is implemented by the class `Functor`, that inherits from `Generic[T]` where `T` is the type of the value. It also is an immutable class. This class would be used to build new functors for that is need to implement the `fmap` function.
+
+#### Fmap
+
+This function is a general `fmap` function, that used to map a function over a functor. For example:
+
+```python
+fmap(lambda x: x + 1, Functor(1)) # Output: Functor(2)
+```
+
+### Applicative
+
+The usefull of this module is that it provide of `apply`, this is used to apply a wrapped function over a wrapped value.
+
+For example:
+
+```python
+apply(Functor(lambda x: x + 1), Functor(1)) # Output: Functor(2)
+```
+
+Other functions that can be used with this module is:
+
+```python
+lift(lambda x, y: x * y, Functor(5), Functor(3)) # Output: Functor(15)
+```
+
+This is the same to do:
+
+```python
+apply(fmap(func, f1), f2)
+```
+
+> Yes this is copy from `liftA2` in Haskell.
+### Monad
+
+
+#### Bind (>>)
+
+#### Maybe
+
+#### FList
