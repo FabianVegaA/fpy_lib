@@ -1,20 +1,23 @@
-from typing import Callable
-from src.functors.functor import Functor, T, S
+from typing import Any, Callable, Generic, Optional
+from src.functors.functor import T, S
 from src.lazyness import lazy_eval
 
 
-class Monad(Functor):
+class Monad(Generic[T]):
+    def __init__(self, value: Optional[T] = None) -> None:
+        object.__setattr__(self, "_Monad__value", value)
+
+    def __setattr__(self, __name: str, __value: Any) -> None:
+        raise AttributeError("This object is not modifiable")
+
+    def get(self) -> T:
+        return self.__value
+
     def unit(self, value: T) -> "Monad[T]":
         return Monad(value)
 
     def bind(self, func: Callable[[[T]], S]) -> "Monad[S]":
         return Monad(func(self.get()))
-
-    def apply(self, func: "Monad[Callable[[T], S]]") -> "Monad[S]":
-        return self.bind(func.get())
-
-    def fmap(self, func: Callable[[[T]], S]) -> "Monad[S]":
-        return self.bind(func)
 
     def __rshift__(self, func: Callable[[[T]], S]) -> "Monad[S]":
         return self.bind(func)
