@@ -16,9 +16,8 @@ class Functor(Generic[T]):
     def __setattr__(self, __name: str, __value: Any) -> None:
         raise AttributeError("This object is not modifiable")
 
-    @abstractmethod
     def fmap(self, func: Callable[["Functor[T]"], "Functor[S]"]) -> "Functor[S]":
-        pass
+        return Functor(func(self.get()))
 
 
 @lazy_eval
