@@ -1,4 +1,5 @@
-from typing import Callable, Iterable, List, Optional, Tuple
+from typing import Callable, Generic, Iterable, List, Optional, Tuple
+from src.functors.applicative import Applicative
 from src.functors.functor import T, S
 from src.functors.monad import Monad
 from src.functors.maybe import Just, Maybe, Nothing
@@ -6,13 +7,20 @@ from src.functors.maybe import Just, Maybe, Nothing
 from functools import reduce
 
 
-class FList(Monad):
+class FList(Applicative, Monad, Generic[T]):
     def __init__(self, value: Optional[Iterable[T]] = None) -> None:
         if value is not None:
             super().__init__(value=list(value))
 
-    def unit(self, value: Optional[Iterable[T]]) -> "FList[T]":
-        return FList(list(value)) if value is not None else EmptyFList()
+    def unit(self, value: Optional[Iterable[T]] = None) -> "FList[T]":
+        if value is None:
+            return EmptyFList()
+        if not isinstance(value, Iterable):
+            return FList([value])
+        elems = list(filter(lambda x: x is not None, value))
+        if not elems:
+            return EmptyFList()
+        return FList(elems)
 
     def bind(self, func: Callable[[T], S]) -> "FList[S]":
         if isinstance(self, EmptyFList):
@@ -39,11 +47,25 @@ class FList(Monad):
     def __next__(self) -> T:
         return next(self.get())
 
-    def __getitem__(self, index: int) -> T:
-        return self.get()[index]
+    def __getitem__(self, __s: slice) -> "FList[T]":
+        return self.unit(self.get().__getitem__(__s))
 
-    def __delitem__(self, index: int) -> None:
-        del self.get()[index]
+    def __len__(self) -> int:
+        return len(self.get())
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, FList):
+            return False
+        return self.get() == other.get()
+
+    def __ne__(self, other: object) -> bool:
+        return not self == other
+
+    def __contains__(self, item: T) -> bool:
+        return item in self.get()
+
+    def __bool__(self) -> bool:
+        return not isinstance(self, EmptyFList)
 
     def __str__(self) -> str:
         return f"FList {self.get()}"
@@ -58,6 +80,12 @@ class EmptyFList(FList):
 
     def get(self) -> List[T]:
         return []
+
+    def __str__(self) -> str:
+        return "EmptyFList"
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
 
 def concat(*ls: "FList[T]") -> "FList[T]":
