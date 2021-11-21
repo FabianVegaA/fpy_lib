@@ -287,6 +287,12 @@ fl_funcs = unit(FList,[(lambda x: x * 2),(lambda x: x + 3)])
 apply(fl_funcs, fl) # Output: FList [2,4,6,4,5,6]
 ```
 
+To the case of be an empty list obtain a `EmptyFList`. For example:
+
+```python
+empty_fl = unit(FList, []) # Output: EmptyFList
+```
+
 This also have a lot of functions to manipulate Flist's.
 
 | Name      | Description                                                 | signature                                                       |
