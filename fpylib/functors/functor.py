@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from typing import Any, Callable, Generic, Optional, TypeVar
-from src.lazyness import lazy_eval
+from fpylib.lazyness import lazy_eval
 
 T = TypeVar("T")
 S = TypeVar("S")

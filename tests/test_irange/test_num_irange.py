@@ -2,7 +2,7 @@ from numbers import Number
 from typing import Any, Iterable, List, Optional, Tuple
 import pytest
 
-from src.irange.num_irange import num_irange
+from fpylib.irange.num_irange import num_irange
 
 
 test_cases_finite_num_irange: Tuple[Number, Any, Any, Iterable] = [

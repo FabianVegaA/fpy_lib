@@ -1,6 +1,6 @@
 from typing import Any, Callable, Generic, Optional
-from src.functors.functor import T, S
-from src.lazyness import lazy_eval
+from fpylib.functors.functor import T, S
+from fpylib.lazyness import lazy_eval
 
 
 class Monad(Generic[T]):

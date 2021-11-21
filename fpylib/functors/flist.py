@@ -1,8 +1,8 @@
 from typing import Callable, Generic, Iterable, List, Optional, Tuple
-from src.functors.applicative import Applicative
-from src.functors.functor import T, S
-from src.functors.monad import Monad
-from src.functors.maybe import Just, Maybe, Nothing
+from fpylib.functors.applicative import Applicative
+from fpylib.functors.functor import T, S
+from fpylib.functors.monad import Monad
+from fpylib.functors.maybe import Just, Maybe, Nothing
 
 from functools import reduce
 

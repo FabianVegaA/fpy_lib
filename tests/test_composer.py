@@ -2,7 +2,7 @@ from typing import Any, Callable, List, Tuple
 import pytest
 
 
-from src.composer import compose, paralalize
+from fpylib.composer import compose, parallelize
 
 test_case_compose: Tuple[List[Callable], List[Any], Any] = [
     ([int, (lambda x: -5 * x), (lambda x: x + 1), (lambda x: x * 2)], ["1"], -8),
@@ -42,4 +42,4 @@ test_case_paralalize: Tuple[List[Callable], List[Any], bool, Any] = [
 def test_paralalize(
     funcs: List[Callable], arg: List[Any], uniqui_intput: bool, expected: Any
 ):
-    assert paralalize(*funcs)(*arg, uniqui_intput=uniqui_intput) == expected
+    assert parallelize(*funcs)(*arg, uniqui_intput=uniqui_intput) == expected

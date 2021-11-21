@@ -1,7 +1,7 @@
 from typing import Any, Callable, Generic, Optional
-from src.functors.functor import Functor, T, S, fmap
-from src.functors.monad import Monad
-from src.lazyness import lazy_eval
+from fpylib.functors.functor import Functor, T, S, fmap
+from fpylib.functors.monad import Monad
+from fpylib.lazyness import lazy_eval
 
 
 class Applicative(Functor, Generic[T]):

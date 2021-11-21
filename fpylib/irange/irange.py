@@ -1,8 +1,8 @@
 from typing import Iterator, Optional, Union
 from numbers import Number
 
-from src.irange.num_irange import num_irange
-from src.irange.char_irange import char_irange
+from fpylib.irange.num_irange import num_irange
+from fpylib.irange.char_irange import char_irange
 
 
 def irange(

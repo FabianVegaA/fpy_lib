@@ -1,7 +1,7 @@
 from typing import Callable, Generic, Optional
-from src.functors.functor import T, S, Functor
-from src.functors.monad import Monad
-from src.functors.applicative import Applicative
+from fpylib.functors.functor import T, S, Functor
+from fpylib.functors.monad import Monad
+from fpylib.functors.applicative import Applicative
 
 
 class Maybe(Applicative, Monad, Generic[T]):

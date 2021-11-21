@@ -1,6 +1,6 @@
 from typing import Iterator, Optional, Any
 
-from src.irange.num_irange import (
+from fpylib.irange.num_irange import (
     _generate_finite_num_range,
     _generate_infinite_num_range,
 )
