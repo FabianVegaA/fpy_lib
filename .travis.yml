@@ -15,8 +15,7 @@ script:
 
 deploy:
   provider: pypi
-  username: "FabianVegaA"
+  username: FabianVegaA
   password: "$PYLI_TOKEN"
-  distributions: "sdist bdist_wheel"
   on:
     branch: main
