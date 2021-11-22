@@ -1,0 +1,21 @@
+language: python
+python:
+  - 3.9
+
+# Update pip to the latest version
+before_install:
+  - python --version
+  - pip install -U pip
+
+install:
+  - pip install -r requirements-dev.txt
+
+script:
+  - python -m pytest tests
+
+deploy:
+  provider: pypi
+  username: "__token__"
+  password: "$PYPI_TOKEN"
+  on:
+    branch: master
