@@ -34,7 +34,7 @@ from fpylib.irange import irange
 # Range finite with step 1
 list(irange(1, ..., 10))  # Output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 list(irange(1.1, ..., 5.2))  # Output: [1.1, 2.1, 3.1, 4.1, 5.1]
-list(irange("a", ..., "l"))  # Output: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
+list(irange("a", ..., "l"))  # Output: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
 list(irange("A", ..., "M", final_include=True))  # Output: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M']
 
 # Range finite with step custom
