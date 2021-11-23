@@ -2,6 +2,7 @@
 
 This is a library to do functional programming in Python.
 
+[![Build Status](https://app.travis-ci.com/FabianVegaA/fpy_lib.svg?branch=main)](https://app.travis-ci.com/FabianVegaA/fpy_lib)
 ## Index
 
 - [Fpylib](#fpylib)
