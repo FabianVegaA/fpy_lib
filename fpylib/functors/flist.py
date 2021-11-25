@@ -1,6 +1,6 @@
-from typing import Callable, Generic, Iterable, List, Optional, Tuple
+from typing import Any, Callable, Generic, Iterable, List, Optional, Tuple
 from fpylib.functors.applicative import Applicative
-from fpylib.functors.functor import T, S
+from fpylib.functors.functor import T, S, Functor
 from fpylib.functors.monad import Monad
 from fpylib.functors.maybe import Just, Maybe, Nothing
 
@@ -8,38 +8,46 @@ from functools import reduce
 
 
 class FList(Applicative, Monad, Generic[T]):
-    def __init__(self, value: Optional[Iterable[T]] = None) -> None:
-        if value is not None:
-            super().__init__(value=list(value))
-
-    def unit(self, value: Optional[Iterable[T]] = None) -> "FList[T]":
+    def __new__(cls, value: Optional[T] = None) -> "FList[T]":
         if value is None:
             return EmptyFList()
         if not isinstance(value, Iterable):
-            return FList([value])
+            value = [value]
+
         elems = list(filter(lambda x: x is not None, value))
+
         if not elems:
             return EmptyFList()
-        return FList(elems)
+
+        obj = super().__new__(cls)
+        object.__setattr__(obj, "_Functor__value", value)
+        return obj
+
+    def __init__(self, value: Optional[T] = None) -> None:
+        def frozen_setattr(cls, __name: str, __value: Any) -> None:
+            raise AttributeError("This object is not modifiable")
+
+        object.__setattr__(self, "__setattr__", frozen_setattr)
+
+    def unit(self, value: Optional[Iterable[T]] = None) -> "FList[T]":
+        return self.__new__(self, value=value)
 
     def bind(self, func: Callable[[T], S]) -> "FList[S]":
         if isinstance(self, EmptyFList):
             return EmptyFList()
-        return FList(map(func, self))
+        return FList(list(map(func, self)))
 
     def fmap(self, func: Callable[[T], S]) -> "FList[S]":
         return self.bind(func)
 
     def apply(self, lfunc: "FList[Callable[[T], S]]") -> "FList[S]":
-        return FList(
-            reduce(lambda l1, l2: l1 + l2, (self.bind(func) for func in lfunc))
-        )
+        return reduce(lambda l1, l2: l1 + l2, [self.bind(func) for func in lfunc])
 
     def get(self) -> List[T]:
-        return list(super().get())
+        return super().get()
 
     def __add__(self, other: "FList[T]") -> "FList[T]":
-        return FList(self.get() + other.get())
+        return FList(list(self.get()) + list(other.get()))
 
     def __iter__(self) -> Iterable[T]:
         return self.get().__iter__()
@@ -75,8 +83,8 @@ class FList(Applicative, Monad, Generic[T]):
 
 
 class EmptyFList(FList):
-    def __init__(self):
-        super().__init__(None)
+    def __new__(cls) -> "EmptyFList":
+        return Functor.__new__(cls)
 
     def get(self) -> List[T]:
         return []
