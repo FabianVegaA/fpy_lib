@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setup(
     name="fpylib",
     packages=find_packages(include=["fpylib", "fpylib.irange", "fpylib.functors"]),
-    version="0.1.1",
+    version="0.1.1.1",
     description="This is a library to do functional programming in Python.",
     long_description_content_type="text/markdown",
     long_description=README,
