@@ -6,6 +6,12 @@ from fpylib.lazyness import lazy_eval
 
 class Applicative(Functor, Generic[T]):
     def apply(self, func: "Functor[Callable[[T], S]]") -> "Functor[S]":
+        """
+        Apply a wrapped function to a wrapped value of the functor.
+        
+        :param func: A wrapped function.
+        :return: A wrapped value of the functor.
+        """
         return self.bind(func.get())
 
 

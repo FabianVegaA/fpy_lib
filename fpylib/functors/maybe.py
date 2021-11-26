@@ -5,12 +5,30 @@ from fpylib.functors.applicative import Applicative
 
 
 class Maybe(Applicative, Monad, Generic[T]):
+    """
+    This is a implementation of the Maybe Monad of Haskell. It is a functor, applicative and monad.
+    """
+
     def unit(self, value: T) -> "Maybe[T]":
+        """
+        Return a Just pr Nothing value based on if the value is None or not.
+
+        :param value: The value to be checked.
+        :type value: T
+        :return: Just value or Nothing
+        """
         if value is not None:
             return Just(value)
         return Nothing()
 
     def bind(self, func: Callable[[T], S]) -> "Maybe[S]":
+        """
+        Return a Just pr Nothing value based on if occur an error or not.
+        
+        :param func: The function to be applied.
+        :type func: Callable[[T], S]
+        :return: Just value or Nothing
+        """
         try:
             value = func(self.get())
             if value is None:

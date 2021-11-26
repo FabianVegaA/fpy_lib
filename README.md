@@ -3,10 +3,12 @@
 This is a library to do functional programming in Python.
 
 [![Build Status](https://app.travis-ci.com/FabianVegaA/fpy_lib.svg?branch=main)](https://app.travis-ci.com/FabianVegaA/fpy_lib)
+
 ## Index
 
 - [Fpylib](#fpylib)
   - [Index](#index)
+  - [Installation](#installation)
   - [Features](#features)
     - [Intelligents Ranges with `irange`](#intelligents-ranges-with-irange)
     - [Lazyness to functions](#lazyness-to-functions)
@@ -20,6 +22,18 @@ This is a library to do functional programming in Python.
       - [Unit](#unit)
     - [Maybe](#maybe)
     - [FList](#flist)
+
+## Installation
+
+To install fpylib, run:
+
+```bash
+pip install fpylib
+```
+
+Check [PyPi](https://pypi.org/project/fpylib/) for more information about the package.
+
+It also check the [documentation](https://fpy-lib.readthedocs.io) for more information.
 
 ## Features
 
