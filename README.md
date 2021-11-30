@@ -21,6 +21,8 @@ This is a library to do functional programming in Python.
       - [Bind (>>)](#bind-)
       - [Unit](#unit)
     - [Maybe](#maybe)
+      - [Unitifier](#unitifier)
+        - [What is a conditioner function?](#what-is-a-conditioner-function)
     - [FList](#flist)
 
 ## Installation
@@ -274,14 +276,18 @@ div(1, 2) # Output: Just 0.5
 Or better:
 
 ```python
-from fpylib.functors import Maybe, Just, Nothing, unit
+from fpylib.functors.monad import unitifier
+from fpylib.functors.maybe import Maybe, maybe_conditioner
 
+@unitifier(Maybe, maybe_conditioner)
 def div(x: Number, y: Number) -> Maybe[Number]:
-  return unit(Maybe, x / y)
+  return x / y
 
 div(1, 0) # Output: Nothing
 div(1, 2) # Output: Just 0.5
 ```
+
+> For more information about unitifier, see [unitifier](#unitifier).
 
 Of this way, the function `div` can be used to divide two numbers without errors, and build pipelines to process data in a safe way.
 
@@ -304,6 +310,14 @@ def email_process(email: str) -> Maybe[str]:
 email_process("  Fpylib@email.com   ") # Output: Just fpylib@email.com
 email_process("  This is not a email   ") # Output: Nothing
 ```
+
+#### Unitifier
+
+This is a decorator that facilitates the creation of a function that returns a monad. This receives a Monad and a conditioner function.
+
+##### What is a conditioner function?
+
+It is a function that receives a value and returns a Monad. In the case of Maybe, this enables to return a Nothing or a Just regardless of the errors.
 
 ### FList
 

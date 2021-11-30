@@ -73,3 +73,33 @@ def unit(m: "Monad", value: T) -> "Monad[T]":
     :return: The Monad with the value.
     """
     return m.unit(m, value)
+
+
+def unitifier(
+    m: "Monad", conditioner: Optional[Callable[[Callable[..., T]], "Monad[T]"]] = None
+) -> Callable[..., "Monad[T]"]:
+    def decorator(func: Callable[..., T]):
+        """
+        Decorator to wrap the result of a function in a Monad.
+
+        :param func: The function to wrap in a Monad.
+        :type func: Callable[..., T]
+        :param m: The Monad to wrap the result of the function in.
+        :type m: Monad
+        :return: The wrapped function.
+        :rtype: Callable[..., Monad[T]]
+        """
+
+        def wrapper(*arg, **kwargs) -> "Monad[T]":
+            if conditioner:
+                return conditioner(func)(*arg, **kwargs)
+            return unit(m, func(*arg, **kwargs))
+
+        try:
+            wrapper.__annotations__ = func.__annotations__
+        finally:
+            wrapper.__name__ = func.__name__
+            wrapper.__doc__ = func.__doc__
+        return wrapper
+
+    return decorator

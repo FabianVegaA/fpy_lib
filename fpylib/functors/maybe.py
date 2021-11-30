@@ -1,6 +1,6 @@
 from typing import Callable, Generic, Optional
 from fpylib.functors.functor import T, S, Functor
-from fpylib.functors.monad import Monad
+from fpylib.functors.monad import Monad, unit, unitifier
 from fpylib.functors.applicative import Applicative
 
 
@@ -24,7 +24,7 @@ class Maybe(Applicative, Monad, Generic[T]):
     def bind(self, func: Callable[[T], S]) -> "Maybe[S]":
         """
         Return a Just pr Nothing value based on if occur an error or not.
-        
+
         :param func: The function to be applied.
         :type func: Callable[[T], S]
         :return: Just value or Nothing
@@ -63,3 +63,22 @@ class Nothing(Maybe):
 
     def __repr__(self) -> str:
         return f"{self.__str__()} {list(self.__failure)}"
+
+
+def maybe_conditioner(func: Callable[..., T]) -> "Maybe[T]":
+    """
+    Conditioner for Maybe.
+
+    :param func: The function to wrap in a Monad.
+    :type func: Callable[..., T]
+    :return: The wrapped function.
+    :rtype: Callable[..., Monad[T]]
+    """
+
+    def wrapper(*arg, **kwargs) -> "Maybe[T]":
+        try:
+            return unit(Maybe, func(*arg, **kwargs))
+        except Exception as e:
+            return Nothing(e)
+
+    return wrapper
