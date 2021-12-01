@@ -7,6 +7,7 @@ Applicative
 
 .. autoclass:: Applicative
     :members:
+    :undoc-members:
     
 
 .. autofunction:: apply

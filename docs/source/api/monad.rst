@@ -4,12 +4,11 @@ Monad
 
 .. currentmodule:: fpylib.functors.monad
 
-
-.. automodule:: fpylib.functors
-
 .. autoclass:: Monad
+    :members:
+    :undoc-members:
     
-
 .. autofunction:: unit
+
 
 .. autofunction:: unitifier

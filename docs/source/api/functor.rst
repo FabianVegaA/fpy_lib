@@ -7,5 +7,7 @@ Functor
 
 
 .. autoclass:: Functor
+    :members:
+    :undoc-members:
 
 .. autofunction:: fmap
