@@ -1,7 +1,7 @@
 import pytest
 
-from fpylib.functors import FList, EmptyFList
-from fpylib.functors import unit
+from fpylib.functors.flist import FList, EmptyFList
+from fpylib.functors.monad import unit
 from fpylib.functors.applicative import apply
 
 _test_flist_cases = [
