@@ -11,3 +11,7 @@ Maybe
     
 
 .. autofunction:: fpylib.functors.maybe_conditioner
+
+.. toctree::
+   :maxdepth: 4
+   :caption: Contents:

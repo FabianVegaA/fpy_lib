@@ -7,7 +7,5 @@ Functor
 
 
 .. autoclass:: fpylib.functors.Functor
-    :members:
-    
 
 .. autofunction:: fmap
