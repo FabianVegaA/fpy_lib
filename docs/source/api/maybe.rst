@@ -5,13 +5,9 @@ Maybe
 .. currentmodule:: fpylib.functors.maybe
 
 
-.. autoclass:: fpylib.functors.Maybe
+.. autoclass:: Maybe
     :members:
     :undoc-members:
     
 
-.. autofunction:: fpylib.functors.maybe_conditioner
-
-.. toctree::
-   :maxdepth: 4
-   :caption: Contents:
+.. autofunction:: maybe_conditioner

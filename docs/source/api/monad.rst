@@ -5,7 +5,7 @@ Monad
 .. currentmodule:: fpylib.functors.monad
 
 
-.. autoclass:: fpylib.functors.Monad
+.. autoclass:: Monad
     :members:
     :undoc-members:
     

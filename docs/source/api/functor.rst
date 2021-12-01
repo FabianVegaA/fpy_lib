@@ -6,6 +6,6 @@ Functor
 .. currentmodule:: fpylib.functors.functor
 
 
-.. autoclass:: fpylib.functors.Functor
+.. autoclass:: Functor
 
 .. autofunction:: fmap

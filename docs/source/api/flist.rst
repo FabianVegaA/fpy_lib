@@ -5,7 +5,7 @@ FList
 .. currentmodule:: fpylib.functors.flist
 
 
-.. autoclass:: fpylib.functors.FList
+.. autoclass:: FList
     :members:
     :undoc-members:
     
@@ -29,3 +29,5 @@ FList
 .. autofunction:: length
 
 .. autofunction:: reverse
+
+
