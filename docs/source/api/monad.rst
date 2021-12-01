@@ -2,7 +2,7 @@
 Monad
 ==========
 
-.. currentmodule:: fpylib.functors.monad
+.. currentmodule:: fpylib.functors
 
 .. autoclass:: Monad
     :members:

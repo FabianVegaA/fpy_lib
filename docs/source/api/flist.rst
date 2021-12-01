@@ -2,7 +2,7 @@
 FList
 ==========
 
-.. currentmodule:: fpylib.functors.flist
+.. currentmodule:: fpylib.functors
 
 
 .. autoclass:: FList
