@@ -19,11 +19,11 @@ Welcome to Fpylib's documentation!
    :maxdepth: 6
    :caption: Functors:
 
-   source/api/functors/functor
-   source/api/functors/monad
-   source/api/functors/applicative
-   source/api/functors/flist
-   source/api/functors/maybe
+   source/api/functor
+   source/api/monad
+   source/api/applicative
+   source/api/flist
+   source/api/maybe
 
 Indices and tables
 ==================

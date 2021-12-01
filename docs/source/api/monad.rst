@@ -11,3 +11,5 @@ Monad
     
 
 .. autofunction:: unit
+
+.. autofunction:: unitifier

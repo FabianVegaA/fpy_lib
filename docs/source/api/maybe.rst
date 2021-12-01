@@ -10,3 +10,4 @@ Maybe
     :undoc-members:
     
 
+.. autofunction:: fpylib.functors.maybe_conditioner
