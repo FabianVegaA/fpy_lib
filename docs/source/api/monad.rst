@@ -5,9 +5,9 @@ Monad
 .. currentmodule:: fpylib.functors.monad
 
 
-.. automodule:: fpylib.functors.Monad
-   :members:
+.. automodule:: fpylib.functors
 
+.. autoclass:: Monad
     
 
 .. autofunction:: unit
