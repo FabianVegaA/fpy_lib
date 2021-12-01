@@ -65,7 +65,7 @@ class Nothing(Maybe):
         return f"{self.__str__()} {list(self.__failure)}"
 
 
-def maybe_conditioner(func: Callable[..., T]) -> "Maybe[T]":
+def maybe_conditioner(func: Callable[..., T]) -> Callable[..., "Maybe[T]"]:
     """
     Conditioner for Maybe.
 
