@@ -9,6 +9,9 @@ FList
     :members:
     :undoc-members:
     
+.. autoclass:: EmptyFList
+    :members:
+    :undoc-members:
 
 .. autofunction:: concat
 

@@ -1,6 +1,6 @@
-============
+=============
 Applicative
-============
+=============
 
 .. currentmodule:: fpylib.functors.applicative
 
@@ -8,6 +8,7 @@ Applicative
 .. autoclass:: Applicative
     :members:
     :undoc-members:
-    
 
 .. autofunction:: apply
+
+.. autofunction:: lift_a2
