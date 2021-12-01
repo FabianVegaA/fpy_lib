@@ -5,7 +5,7 @@ Monad
 .. currentmodule:: fpylib.functors.monad
 
 
-.. automodule:: Monad
+.. automodule:: fpylib.functors.Monad
    :members:
 
     
