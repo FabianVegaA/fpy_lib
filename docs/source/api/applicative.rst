@@ -2,7 +2,7 @@
 Applicative
 =============
 
-.. currentmodule:: fpylib.functors
+.. currentmodule:: fpylib.functors.applicative
 
 
 .. autoclass:: Applicative

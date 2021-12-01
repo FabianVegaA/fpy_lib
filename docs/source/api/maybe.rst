@@ -2,7 +2,7 @@
 Maybe
 ============
 
-.. currentmodule:: fpylib.functors
+.. currentmodule:: fpylib.functors.maybe
 
 
 .. autoclass:: Maybe
