@@ -48,7 +48,7 @@ class Monad(Generic[T]):
         """
         return Monad(func(self.get()))
 
-    def __rshift__(self, func: Callable[[[T]], S]) -> "Monad[S]":
+    def __rshift__(self, func: Callable[[T], S]) -> "Monad[S]":
         """
         Use the >> operator to bind the given function to the value of the Monad.
 
