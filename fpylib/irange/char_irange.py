@@ -1,9 +1,7 @@
-from typing import Iterator, Optional, Any
+from typing import Any, Iterator, Optional
 
-from fpylib.irange.num_irange import (
-    _generate_finite_num_range,
-    _generate_infinite_num_range,
-)
+from fpylib.irange.num_irange import (_generate_finite_num_range,
+                                      _generate_infinite_num_range)
 
 
 def is_char(*objs: Any, allow_none=False) -> bool:
@@ -83,8 +81,10 @@ def _generate_infinite_char_range(first: str, second: Optional[str]) -> Iterator
     _first, _second = (
         char_decode(string) if string else None for string in (first, second)
     )
+    assert _first is not None
     yield from (
-        char_encode(i, is_lower) for i in _generate_infinite_num_range(_first, _second)
+        char_encode(int(i), is_lower)
+        for i in _generate_infinite_num_range(_first, _second)
     )
 
 
@@ -104,9 +104,9 @@ def _generate_finite_char_range(
     _first, _second, _final = (
         char_decode(string) if string else None for string in (first, second, final)
     )
-
+    assert _first is not None and _final is not None
     yield from (
-        char_encode(i, is_lower)
+        char_encode(int(i), is_lower)
         for i in _generate_finite_num_range(_first, _second, _final, final_include)
     )
 

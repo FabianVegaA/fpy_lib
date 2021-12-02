@@ -1,14 +1,14 @@
-from typing import Any, Callable, Generic, Iterable, List, Optional, Tuple
-from fpylib.functors.applicative import Applicative
-from fpylib.functors.functor import T, S, Functor
-from fpylib.functors.monad import Monad
-from fpylib.functors.maybe import Just, Maybe, Nothing
-
 from functools import reduce
+from typing import Any, Callable, Generic, Iterable, List, Optional, Tuple
+
+from fpylib.functors.applicative import Applicative
+from fpylib.functors.functor import _S, _T, Functor
+from fpylib.functors.maybe import Just, Maybe, Nothing
+from fpylib.functors.monad import Monad
 
 
-class FList(Applicative, Monad, Generic[T]):
-    def __new__(cls, value: Optional[T] = None) -> "FList[T]":
+class FList(Applicative, Monad, Generic[_T]):
+    def __new__(cls, value: Optional[_T] = None) -> "FList[_T]":
         if value is None:
             return EmptyFList()
         if not isinstance(value, Iterable):
@@ -20,42 +20,39 @@ class FList(Applicative, Monad, Generic[T]):
             return EmptyFList()
 
         obj = super().__new__(cls)
-        object.__setattr__(obj, "_Functor__value", value)
+        object.__setattr__(obj, "_Functor__value", elems)
         return obj
 
-    def __init__(self, value: Optional[T] = None) -> None:
+    def __init__(self, value: Optional[_T] = None) -> None:
         def frozen_setattr(cls, __name: str, __value: Any) -> None:
             raise AttributeError("This object is not modifiable")
 
         object.__setattr__(self, "__setattr__", frozen_setattr)
 
-    def unit(self, value: Optional[Iterable[T]] = None) -> "FList[T]":
-        return self.__new__(self, value=value)
+    def unit(self, value: Optional[Iterable[_T]] = None) -> "FList[_T]":
+        return FList(value)
 
-    def bind(self, func: Callable[[T], S]) -> "FList[S]":
+    def bind(self, func: Callable[[_T], _S]) -> "FList[_S]":
         if isinstance(self, EmptyFList):
             return EmptyFList()
         return FList(list(map(func, self)))
 
-    def fmap(self, func: Callable[[T], S]) -> "FList[S]":
+    def fmap(self, func: Callable[[_T], _S]) -> "FList[_S]":
         return self.bind(func)
 
-    def apply(self, lfunc: "FList[Callable[[T], S]]") -> "FList[S]":
+    def apply(self, lfunc: "FList[Callable[[_T], _S]]") -> "FList[_S]":
         return reduce(lambda l1, l2: l1 + l2, [self.bind(func) for func in lfunc])
 
-    def get(self) -> List[T]:
-        return super().get()
-
-    def __add__(self, other: "FList[T]") -> "FList[T]":
+    def __add__(self, other: "FList[_T]") -> "FList[_T]":
         return FList(list(self.get()) + list(other.get()))
 
-    def __iter__(self) -> Iterable[T]:
+    def __iter__(self) -> Iterable[_T]:
         return self.get().__iter__()
 
-    def __next__(self) -> T:
+    def __next__(self) -> _T:
         return next(self.get())
 
-    def __getitem__(self, __s: slice) -> "FList[T]":
+    def __getitem__(self, __s: slice) -> "FList[_T]":
         return self.unit(self.get().__getitem__(__s))
 
     def __len__(self) -> int:
@@ -69,7 +66,7 @@ class FList(Applicative, Monad, Generic[T]):
     def __ne__(self, other: object) -> bool:
         return not self == other
 
-    def __contains__(self, item: T) -> bool:
+    def __contains__(self, item: _T) -> bool:
         return item in self.get()
 
     def __bool__(self) -> bool:
@@ -86,7 +83,7 @@ class EmptyFList(FList):
     def __new__(cls) -> "EmptyFList":
         return Functor.__new__(cls)
 
-    def get(self) -> List[T]:
+    def get(self) -> List[_T]:
         return []
 
     def __str__(self) -> str:
@@ -96,7 +93,7 @@ class EmptyFList(FList):
         return self.__str__()
 
 
-def concat(*ls: "FList[T]") -> "FList[T]":
+def concat(*ls: FList[_T]) -> FList[_T]:
     """
     Concatenate two or more FList.
 
@@ -106,7 +103,7 @@ def concat(*ls: "FList[T]") -> "FList[T]":
     return FList(sum(ls, EmptyFList()))
 
 
-def head(l: "FList[T]") -> T:
+def head(l: FList[_T]) -> _T:
     """
     Get the first element of a FList.
 
@@ -118,7 +115,7 @@ def head(l: "FList[T]") -> T:
     return l.get()[0]
 
 
-def last(l: "FList[T]") -> T:
+def last(l: FList[_T]) -> _T:
     """
     Get the last element of a FList.
 
@@ -130,7 +127,7 @@ def last(l: "FList[T]") -> T:
     return l.get()[-1]
 
 
-def tail(l: "FList[T]") -> "FList[T]":
+def tail(l: "FList[_T]") -> FList[_T]:
     """
     Get the all elements of a FList except the first one.
 
@@ -142,7 +139,7 @@ def tail(l: "FList[T]") -> "FList[T]":
     return FList(l.get()[1:])
 
 
-def init(l: "FList[T]") -> "FList[T]":
+def init(l: FList[_T]) -> FList[_T]:
     """
     Get all elements of a FList except the last one.
 
@@ -154,7 +151,7 @@ def init(l: "FList[T]") -> "FList[T]":
     return FList(l.get()[:-1])
 
 
-def uncons(l: "FList[T]") -> "Maybe[Tuple[T, 'FList[T]']]":
+def uncons(l: FList[_T]) -> "Maybe[Tuple[_T, 'FList[_T]']]":
     """
     Get the first element of a FList and the rest of the FList.
 
@@ -166,7 +163,7 @@ def uncons(l: "FList[T]") -> "Maybe[Tuple[T, 'FList[T]']]":
     return Just(l.get()[0], FList(l.get()[1:]))
 
 
-def singleton(x: T) -> "FList[T]":
+def singleton(x: _T) -> FList[_T]:
     """
     Create a FList with a single element.
 
@@ -176,7 +173,7 @@ def singleton(x: T) -> "FList[T]":
     return FList([x])
 
 
-def null(l: "FList[T]") -> bool:
+def null(l: FList[_T]) -> bool:
     """
     Verify if a FList is empty.
 
@@ -188,7 +185,7 @@ def null(l: "FList[T]") -> bool:
     return isinstance(l, EmptyFList)
 
 
-def length(l: "FList[T]") -> int:
+def length(l: FList[_T]) -> int:
     """
     Get the length of a FList.
 
@@ -198,7 +195,7 @@ def length(l: "FList[T]") -> int:
     return len(l.get())
 
 
-def reverse(l: "FList[T]") -> "FList[T]":
+def reverse(l: FList[_T]) -> FList[_T]:
     """
     Reverse a FList.
 

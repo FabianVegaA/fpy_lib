@@ -1,6 +1,6 @@
 from functools import partial, wraps
-from typing import Callable, Union, Any
 from inspect import getmembers, isfunction, signature
+from typing import Any, Callable, Union
 
 
 def lazy_eval(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -19,6 +19,11 @@ def lazy_eval(func: Callable[..., Any]) -> Callable[..., Any]:
             return lazy_eval(partial(func, *args, **kwargs))
         raise ValueError("Too many arguments")
 
+    try:
+        wrapper.__annotations__ = func.__annotations__
+    finally:
+        wrapper.__name__ = func.__name__
+        wrapper.__doc__ = func.__doc__
     return wrapper
 
 
@@ -30,8 +35,7 @@ def lazy_class(cls: object) -> object:
     :return: A class with all the methods lazies.
     """
 
-    @wraps(cls)
-    def wrapper(cls: object) -> Callable[[object], object]:
+    def wrapper(cls: object) -> object:
         for name, method in getmembers(cls, predicate=isfunction):
             setattr(cls, name, lazy_eval(method))
         return cls

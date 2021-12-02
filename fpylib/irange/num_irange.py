@@ -1,10 +1,11 @@
 from typing import Iterator, Optional
-from numbers import Number
+
+from fpylib.types import is_number, number
 
 
 def _number_generator(
-    start: Number, final: Optional[Number] = None, step: Number = 1
-) -> Iterator[Number]:
+    start: number, final: Optional[number] = None, step: number = 1
+) -> Iterator[number]:
     current = start
     while True if final is None else current < final:
         yield current
@@ -12,36 +13,37 @@ def _number_generator(
 
 
 def _generate_finite_num_range(
-    first: Number,
-    second: Optional[Number],
-    final: Optional[Number],
+    first: number,
+    second: Optional[number],
+    final: number,
     final_include: bool,
-) -> Iterator[Number]:
+) -> Iterator[number]:
+
     if second in [None, Ellipsis]:
         yield from _number_generator(first, final + final_include)
-    elif isinstance(second, Number):
+    elif is_number(second):
         yield from _number_generator(first, final + final_include, second - first)
     else:
-        raise TypeError("Second argument must be an integer")
+        raise TypeError("Second argument must be an number")
 
 
 def _generate_infinite_num_range(
-    first: Number, second: Optional[Number]
-) -> Iterator[Number]:
+    first: number, second: Optional[number]
+) -> Iterator[number]:
     if second in [None, Ellipsis]:
         yield from _number_generator(first)
-    elif "__sub__" in dir(second):
+    elif is_number(second):
         yield from _number_generator(first, step=second - first)
     else:
-        raise TypeError(f"{type(first)} argument must have __sub__")
+        raise TypeError(f"Second {second} argument must be an number or None")
 
 
 def num_irange(
-    first: Number,
-    second: Optional[Number] = None,
-    final: Optional[Number] = None,
+    first: number,
+    second: Optional[number] = None,
+    final: Optional[number] = None,
     final_include: bool = False,
-) -> Iterator[Number]:
+) -> Iterator[number]:
     """
     Intelligen range function that can be used \
     with infinite or finite ranges of integers.
@@ -52,7 +54,7 @@ def num_irange(
     :return: A generator of the range.
     """
 
-    if isinstance(final, Number):
+    if is_number(final):
         yield from _generate_finite_num_range(first, second, final, final_include)
     elif final in [None, Ellipsis]:
         yield from _generate_infinite_num_range(first, second)

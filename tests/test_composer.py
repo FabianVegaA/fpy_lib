@@ -1,10 +1,10 @@
 from typing import Any, Callable, List, Tuple
-import pytest
 
+import pytest
 
 from fpylib.composer import compose, parallelize
 
-test_case_compose: Tuple[List[Callable], List[Any], Any] = [
+test_case_compose: List[Tuple[List[Callable], List[Any], Any]] = [
     ([int, (lambda x: -5 * x), (lambda x: x + 1), (lambda x: x * 2)], ["1"], -8),
     ([(lambda x: x ** 3), (lambda x: -x), (lambda x: x * 2)], [2], -16),
     (
@@ -21,7 +21,7 @@ def test_compose(funcs: List[Callable], arg: List[Any], expected: Any):
     assert compose(*funcs)(*arg) == expected
 
 
-test_case_paralalize: Tuple[List[Callable], List[Any], bool, Any] = [
+test_case_paralalize: List[Tuple[List[Callable], List[Any], bool, Any]] = [
     ([(lambda x: x ** 3), (lambda x: -x), (lambda x: x * 2)], [2], True, (8, -2, 4)),
     (
         [

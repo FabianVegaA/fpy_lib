@@ -1,8 +1,8 @@
 import pytest
 
-from fpylib.functors.flist import FList, EmptyFList
-from fpylib.functors.monad import unit
 from fpylib.functors.applicative import apply
+from fpylib.functors.flist import EmptyFList, FList
+from fpylib.functors.monad import unit
 
 _test_flist_cases = [
     ([1, 2, 3, 4, 5], [1, 2, 3, 4, 5], FList),
@@ -20,8 +20,6 @@ def test_flist(l, expected_list, expected_instance):
     assert isinstance(fl, expected_instance)
 
 
-test_flist(*_test_flist_cases[-1])
-
 _test_unit_flist_cases = [
     ([1, 2, 3, 4, 5], [1, 2, 3, 4, 5], FList),
     ([], [], EmptyFList),
@@ -32,7 +30,7 @@ _test_unit_flist_cases = [
 
 @pytest.mark.parametrize("l, expected_list, expected_instance", _test_unit_flist_cases)
 def test_unit_flist(l, expected_list, expected_instance):
-    fl = unit(FList, l)
+    fl = unit(m=FList, value=l)
 
     assert fl.get() == expected_list
     assert isinstance(fl, expected_instance)

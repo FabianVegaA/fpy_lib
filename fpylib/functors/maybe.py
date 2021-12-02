@@ -1,15 +1,16 @@
 from typing import Callable, Generic, Optional
-from fpylib.functors.functor import T, S, Functor
-from fpylib.functors.monad import Monad, unit, unitifier
+
 from fpylib.functors.applicative import Applicative
+from fpylib.functors.functor import _S, _T
+from fpylib.functors.monad import Monad, unit
 
 
-class Maybe(Applicative, Monad, Generic[T]):
+class Maybe(Applicative, Monad, Generic[_T]):
     """
     This is a implementation of the Maybe Monad of Haskell. It is a functor, applicative and monad.
     """
 
-    def unit(self, value: T) -> "Maybe[T]":
+    def unit(self, value: _T) -> "Maybe[_T]":
         """
         Return a Just pr Nothing value based on if the value is None or not.
 
@@ -21,7 +22,7 @@ class Maybe(Applicative, Monad, Generic[T]):
             return Just(value)
         return Nothing()
 
-    def bind(self, func: Callable[[T], S]) -> "Maybe[S]":
+    def bind(self, func: Callable[[_T], _S]) -> "Maybe[_S]":
         """
         Return a Just pr Nothing value based on if occur an error or not.
 
@@ -65,7 +66,7 @@ class Nothing(Maybe):
         return f"{self.__str__()} {list(self.__failure)}"
 
 
-def maybe_conditioner(func: Callable[..., T]) -> Callable[..., "Maybe[T]"]:
+def maybe_conditioner(func: Callable[..., _T]) -> Callable[..., "Maybe[_T]"]:
     """
     Conditioner for Maybe.
 
@@ -75,7 +76,7 @@ def maybe_conditioner(func: Callable[..., T]) -> Callable[..., "Maybe[T]"]:
     :rtype: Callable[..., Monad[T]]
     """
 
-    def wrapper(*arg, **kwargs) -> "Maybe[T]":
+    def wrapper(*arg, **kwargs) -> "Maybe[_T]":
         try:
             return unit(Maybe, func(*arg, **kwargs))
         except Exception as e:

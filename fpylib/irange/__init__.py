@@ -1,10 +1,2 @@
-from fpylib.irange.irange import (
-    irange,
-    char_irange,
-    num_irange,
-)
-
-from fpylib.irange.char_irange import (
-    char_encode,
-    char_decode,
-)
+from fpylib.irange.char_irange import char_decode, char_encode
+from fpylib.irange.irange import char_irange, irange, num_irange

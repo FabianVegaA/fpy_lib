@@ -1,11 +1,10 @@
-from typing import Any, Callable, Generic, Optional, TypeVar
+from typing import Any, Callable, Generic, Optional
+
 from fpylib.lazyness import lazy_eval
-
-T = TypeVar("T")
-S = TypeVar("S")
+from fpylib.types import _S, _T
 
 
-class Functor(Generic[T]):
+class Functor(Generic[_T]):
     """
     Class Functor is a generic class that implements the Functor type class.
 
@@ -15,7 +14,7 @@ class Functor(Generic[T]):
     :return: A functor with the given value.
     """
 
-    def __init__(self, value: Optional[T] = None) -> None:
+    def __init__(self, value: Optional[_T] = None) -> None:
         """
         Initialize a functor with the given value.
 
@@ -30,7 +29,7 @@ class Functor(Generic[T]):
         object.__setattr__(self, "_Functor__value", value)
         object.__setattr__(self, "__setattr__", frozen_setattr)
 
-    def get(self) -> T:
+    def get(self) -> _T:
         """
         Get the value of the functor.
 
@@ -38,7 +37,7 @@ class Functor(Generic[T]):
         """
         return self.__value
 
-    def fmap(self, func: Callable[["Functor[T]"], "Functor[S]"]) -> "Functor[S]":
+    def fmap(self, func: Callable[["Functor[_T]"], "Functor[_S]"]) -> "Functor[_S]":
         """
         Apply a function to the value of the functor.
 
@@ -50,7 +49,7 @@ class Functor(Generic[T]):
 
 
 @lazy_eval
-def fmap(func: Callable[[Functor[T]], Functor[S]], ft: Functor[T]) -> Functor[S]:
+def fmap(func: Callable[[Functor[_T]], Functor[_S]], ft: Functor[_T]) -> Functor[_S]:
     """
     This function is a functor's fmap function.
 

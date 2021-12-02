@@ -1,5 +1,4 @@
-from typing import Callable, Any, Tuple
-from functools import wraps
+from typing import Any, Callable, Tuple
 
 
 def compose(*funcs: Callable[..., Any]) -> Callable[..., Any]:
@@ -14,7 +13,6 @@ def compose(*funcs: Callable[..., Any]) -> Callable[..., Any]:
     elif len(funcs) == 1:
         return funcs[0]
 
-    @wraps(funcs)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         result = funcs[0](*args, **kwargs)
         for func in funcs[1:]:
@@ -32,7 +30,6 @@ def parallelize(*funcs: Callable[..., Any]) -> Callable[..., Tuple]:
     :return: A function that returns the result of the function.
     """
 
-    @wraps(funcs)
     def wrapper(*args: Any, uniqui_intput: bool = True) -> Tuple:
         if not uniqui_intput:
             return tuple(func(arg) for arg, func in zip(args, funcs))

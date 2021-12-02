@@ -2,7 +2,7 @@
 
 This is a library to do functional programming in Python.
 
-[![Build Status](https://app.travis-ci.com/FabianVegaA/fpy_lib.svg?branch=main)](https://app.travis-ci.com/FabianVegaA/fpy_lib)
+[![Build Status](https://app.travis-ci.com/FabianVegaA/fpy_lib.svg?branch=main)](https://app.travis-ci.com/FabianVegaA/fpy_lib) [![Documentation Status](https://readthedocs.org/projects/fpy-lib/badge/?version=latest)](https://fpy-lib.readthedocs.io/en/latest/?badge=latest)
 
 ## Index
 
@@ -180,7 +180,7 @@ In Fpylib, the functor is implemented by the class `Functor`, that inherits from
 This function is a general `fmap` function, that used to map a function over a functor. For example:
 
 ```python
-from fpylib.functors import fmap
+from fpylib.functors.functor import fmap
 
 fmap(lambda x: x + 1, Functor(1)) # Output: Functor 2
 ```
@@ -192,7 +192,7 @@ The usefull of this module is that it provide of `apply`, this is used to apply 
 For example:
 
 ```python
-from fpylib.functors import apply
+from fpylib.functors.applicative import apply
 
 apply(Functor(lambda x: x + 1), Functor(1)) # Output: Functor 2
 ```
@@ -200,7 +200,7 @@ apply(Functor(lambda x: x + 1), Functor(1)) # Output: Functor 2
 Other functions that can be used with this module is:
 
 ```python
-from fpylib.functors import lift_a2
+from fpylib.functors.applicative import lift_a2
 
 lift_a2(lambda x, y: x * y, Functor(5), Functor(3)) # Output: Functor 15
 ```
@@ -208,7 +208,7 @@ lift_a2(lambda x, y: x * y, Functor(5), Functor(3)) # Output: Functor 15
 This is the same to do:
 
 ```python
-from fpylib.functors import apply
+from fpylib.functors.applicative import apply
 
 apply(fmap(func, f1), f2)
 ```
@@ -248,7 +248,7 @@ example = (
 This is a function to wrap a value in a monad. For example:
 
 ```python
-from fpylib.functors import unit
+from fpylib.functors.monad import unit
 
 m = unit(SomeMonad, 1) # Output: SomeMonad 1
 ```
@@ -262,7 +262,7 @@ This is Functor, Applicative and Monad. It is used to keep a information flow wi
 For example:
 
 ```python
-from fpylib.functors import Maybe, Just, Nothing
+from fpylib.functors.maybe import Maybe, Just, Nothing
 
 def div(x: Number, y: Number) -> Maybe[Number]:
     if y == 0:
@@ -280,7 +280,7 @@ from fpylib.functors.monad import unitifier
 from fpylib.functors.maybe import Maybe, maybe_conditioner
 
 @unitifier(Maybe, maybe_conditioner)
-def div(x: Number, y: Number) -> Maybe[Number]:
+def div(x: Number, y: Number) -> Number:
   return x / y
 
 div(1, 0) # Output: Nothing
@@ -296,7 +296,7 @@ Of this way, the function `div` can be used to divide two numbers without errors
 Like the next example:
 
 ```python
-from fpylib.functors import unit
+from fpylib.functors.monad import unit
 
 def email_process(email: str) -> Maybe[str]:
     return (
