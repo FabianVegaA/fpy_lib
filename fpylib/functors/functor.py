@@ -1,6 +1,6 @@
 from typing import Any, Callable, Generic, Optional
 
-from fpylib.lazyness import lazy_eval
+from fpylib.curring import currify 
 from fpylib.types import _S, _T
 
 
@@ -48,7 +48,7 @@ class Functor(Generic[_T]):
         return Functor(func(self.get()))
 
 
-@lazy_eval
+@currify
 def fmap(func: Callable[[Functor[_T]], Functor[_S]], ft: Functor[_T]) -> Functor[_S]:
     """
     This function is a functor's fmap function.

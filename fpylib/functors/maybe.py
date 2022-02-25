@@ -18,9 +18,7 @@ class Maybe(Applicative, Monad, Generic[_T]):
         :type value: T
         :return: Just value or Nothing
         """
-        if value is not None:
-            return Just(value)
-        return Nothing()
+        return Just(value) if value is not None else Nothing()
 
     def bind(self, func: Callable[[_T], _S]) -> "Maybe[_S]":
         """

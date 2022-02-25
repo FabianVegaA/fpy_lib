@@ -1,7 +1,7 @@
 from typing import Callable, Generic
 
 from fpylib.functors.functor import _S, _T, Functor, fmap
-from fpylib.lazyness import lazy_eval
+from fpylib.curring import currify
 
 
 class Applicative(Functor, Generic[_T]):
@@ -15,7 +15,7 @@ class Applicative(Functor, Generic[_T]):
         return self.bind(func.get())
 
 
-@lazy_eval
+@currify
 def apply(func: Functor[Callable[[_T], _S]], ft: Functor[_T]) -> Functor[_S]:
     """
     This the function applicative to a functor that wraps a function and a functor.
@@ -38,4 +38,4 @@ def lift_a2(
     :param f2: Functor[T]
     :return: Functor[S]
     """
-    return apply(fmap(lazy_eval(func), f1), f2)
+    return apply(fmap(currify(func), f1), f2)

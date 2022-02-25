@@ -3,12 +3,26 @@ from inspect import getmembers, isfunction, signature
 from typing import Any, Callable, Union
 
 
-def lazy_eval(func: Callable[..., Any]) -> Callable[..., Any]:
+def currify(func: Callable[..., Any]) -> Callable[..., Any]:
     """
-    Decorator to make a function lazy.
+    Currying a function.
 
     :func: The function to be lazy.
     :return: A function that returns the result of the function.
+    
+    :Example:
+    >>> @currify
+    >>> def add(x: int, y: int) -> int:
+    >>>    return x + y
+    >>> add_one = add(1)
+    >>> add_one(2)
+    3
+    >>> add_one(3)
+    4
+    >>> add_one_map = currify(map)(operator.add)
+    >>> add_one_map([1, 2, 3])
+    [2, 3, 4]
+    
     """
 
     @wraps(func)
@@ -16,7 +30,7 @@ def lazy_eval(func: Callable[..., Any]) -> Callable[..., Any]:
         if len(signature(func).parameters) == len(args) + len(kwargs):
             return func(*args, **kwargs)
         elif len(signature(func).parameters) > len(args) + len(kwargs):
-            return lazy_eval(partial(func, *args, **kwargs))
+            return currify(partial(func, *args, **kwargs))
         raise ValueError("Too many arguments")
 
     try:
@@ -27,7 +41,7 @@ def lazy_eval(func: Callable[..., Any]) -> Callable[..., Any]:
     return wrapper
 
 
-def lazy_class(cls: object) -> object:
+def currify_class(cls: object) -> object:
     """
     Decorator to make a class lazy.
 
@@ -37,7 +51,7 @@ def lazy_class(cls: object) -> object:
 
     def wrapper(cls: object) -> object:
         for name, method in getmembers(cls, predicate=isfunction):
-            setattr(cls, name, lazy_eval(method))
+            setattr(cls, name, currify(method))
         return cls
 
     return wrapper(cls)

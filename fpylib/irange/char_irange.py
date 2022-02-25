@@ -1,7 +1,9 @@
 from typing import Any, Iterator, Optional
 
-from fpylib.irange.num_irange import (_generate_finite_num_range,
-                                      _generate_infinite_num_range)
+from fpylib.irange.num_irange import (
+    _generate_finite_num_range,
+    _generate_infinite_num_range,
+)
 
 
 def is_char(*objs: Any, allow_none=False) -> bool:
