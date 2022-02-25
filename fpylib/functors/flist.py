@@ -59,9 +59,7 @@ class FList(Applicative, Monad, Generic[_T]):
         return len(self.get())
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, FList):
-            return False
-        return self.get() == other.get()
+        return False if not isinstance(other, FList) else self.get() == other.get()
 
     def __ne__(self, other: object) -> bool:
         return not self == other

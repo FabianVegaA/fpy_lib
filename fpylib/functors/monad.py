@@ -1,7 +1,7 @@
 from typing import Any, Callable, Generic, Optional
 
 from fpylib.functors.functor import _S, _T
-from fpylib.lazyness import lazy_eval
+from fpylib.curring import currify
 
 
 class Monad(Generic[_T]):
@@ -64,7 +64,7 @@ class Monad(Generic[_T]):
         return self.bind(func)
 
 
-@lazy_eval
+@currify
 def unit(m: Monad, value: _T) -> Monad[_T]:
     """
     The unit function for the Monad.
