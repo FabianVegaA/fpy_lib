@@ -11,7 +11,7 @@ This is a library to do functional programming in Python.
   - [Installation](#installation)
   - [Features](#features)
     - [Intelligents Ranges with `irange`](#intelligents-ranges-with-irange)
-    - [Lazyness to functions](#lazyness-to-functions)
+    - [Curring functions](#curring-functions)
     - [Compose and paralelize functions](#compose-and-paralelize-functions)
   - [Functional Programming in Python?](#functional-programming-in-python)
     - [Functor](#functor)
@@ -66,16 +66,16 @@ list(irange("a"))  # Output: ['a', 'b', ..., 'z', 'aa', 'ab', ...] An infinite r
 
 ```
 
-### Lazyness to functions
+### Curring functions
 
-Inspired by Haskell, this library provides a function `lazy_eval` that can be used to make a function lazy. This function is a decorator that can be used to make a function lazy, and `lazy_class` also a decorator to classes that can be used to make all methods lazy.
+Inspired by Haskell, this library provides a function `currify` that can be used to make a function lazy. This function is a decorator that can be used to make a function lazy, and `currify_class` also a decorator to classes that can be used to make all methods lazy.
 
 For example, the following code:
 
 ```python
-from fpylib.lazyness import lazy_eval
+from fpylib.curring import currify
 
-@lazy_eval
+@currify
 def sum3(x, y, z):
     return x + y + z
 
@@ -87,9 +87,9 @@ sum3(1, 2, 3) # Output: 6
 And to make the class `Foo` lazy, the following code:
 
 ```python
-from fpylib.lazyness import lazy_class
+from fpylib.curring import currify_class
 
-@lazy_class
+@currify_class
 class Foo:
   def __init__(self, x):
     self.x = x
